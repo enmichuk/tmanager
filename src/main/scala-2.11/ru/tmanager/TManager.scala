@@ -2,6 +2,7 @@ package ru.tmanager
 
 import akka.actor.{ActorSystem, Props}
 import ru.tmanager.services.account.AccountService
+import ru.tmanager.services.transaction.TransactionManager
 import ru.tmanager.services.transfer.TransferService
 import ru.tmanager.web.WebEndpoint
 
@@ -17,9 +18,9 @@ object TManager extends App{
 
   val transferService = actorSystem.actorOf(Props[TransferService], "transferService")
 
-//  val transactionManager = actorSystem.actorOf(Props(classOf[TransactionManager], accountManager), "transaction-manager")
+  val transactionManager = actorSystem.actorOf(Props(classOf[TransactionManager]), "transactionManager")
 
-  val endpoint = new WebEndpoint("localhost", 8080, accountService, transferService/*, transactionManager*/)
+  val endpoint = new WebEndpoint("localhost", 8080, accountService, transferService, transactionManager)
 
   Future {
     println("Press enter to stop server")

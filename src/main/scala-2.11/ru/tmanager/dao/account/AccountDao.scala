@@ -16,7 +16,7 @@ trait AccountDao extends Dao {
 
   def getAllAccounts: List[Account] = FakeDB.accountTable.map{case (id, account) => account}(breakOut)
 
-  def create(account: Account) = FakeDB.accountTable.put(account.id, account)
+  def createOrUpdate(account: Account) = FakeDB.accountTable.put(account.id, account)
 
   def removeAccountById(id: String): Option[Account] = FakeDB.accountTable.remove(id)
 

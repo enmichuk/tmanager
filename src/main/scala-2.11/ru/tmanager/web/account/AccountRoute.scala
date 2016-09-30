@@ -16,7 +16,7 @@ trait AccountRoute extends TManagerRoute{
 
   def accountService: ActorRef
 
-  val accountRoute = {
+  val accountRoute =
     pathPrefix("account" / Segment) { accountId =>
       get {
         onSuccess(accountService ? AccountByIdRequest(accountId)) {
@@ -45,6 +45,5 @@ trait AccountRoute extends TManagerRoute{
           }
         }
       }
-  }
 
 }

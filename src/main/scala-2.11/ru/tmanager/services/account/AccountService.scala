@@ -31,7 +31,7 @@ class AccountService extends Actor with AccountDao with ActorDao{
     case AccountByIdRequest(id) => sender ! AccountByIdResponse(getAccountById(id))
 
     case CreateAccountRequest(account: Account) =>
-      create(account) match{
+      createOrUpdate(account) match{
         case None => sender ! CreateAccountResponse(account, success = true)
         case Some(a) => sender ! CreateAccountResponse(a, success = false)
       }

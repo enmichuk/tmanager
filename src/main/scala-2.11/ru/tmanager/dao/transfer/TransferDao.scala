@@ -12,4 +12,6 @@ trait TransferDao extends Dao {
 
   def getAllTransfers: List[Transfer] = FakeDB.transferTable.map{case (id, account) => account}(breakOut)
 
+  def create(transfer: Transfer) = FakeDB.transferTable.put(transfer.id, transfer)
+
 }

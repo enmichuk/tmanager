@@ -16,7 +16,7 @@ trait TransferRoute extends TManagerRoute{
 
   def transferService: ActorRef
 
-  val transferRoute = {
+  val transferRoute =
     pathPrefix("transfers") {
       get {
         onSuccess(transferService ? TransfersRequest) {
@@ -24,6 +24,5 @@ trait TransferRoute extends TManagerRoute{
         }
       }
     }
-  }
 
 }

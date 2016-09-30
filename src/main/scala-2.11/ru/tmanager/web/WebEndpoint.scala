@@ -16,25 +16,26 @@ import ru.tmanager.services.transfer.TransferService.{TransfersRequest, Transfer
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
-import ru.tmanager.web.account.{AccountJsonProtocol, AccountRoute}
-import ru.tmanager.web.transfer.{TransferJsonProtocol, TransferRoute}
+import ru.tmanager.web.account.AccountRoute
+import ru.tmanager.web.transaction.TransactionRoute
+import ru.tmanager.web.transfer.TransferRoute
 import spray.json._
 
 class WebEndpoint(
                    host: String,
                    port: Int,
                    val accountService: ActorRef ,
-                   val transferService: ActorRef
-                   /*, transactionManager: ActorRef*/
+                   val transferService: ActorRef,
+                   val transactionManager: ActorRef
                  )
-                 (implicit actorSystem: ActorSystem) extends AccountRoute with TransferRoute{
+                 (implicit actorSystem: ActorSystem) extends AccountRoute with TransferRoute with TransactionRoute{
 
   implicit val timeout = Timeout(5 seconds)
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = actorSystem.dispatcher
 
   private val binding: Future[ServerBinding] =
-    Http().bindAndHandle(accountRoute ~ transferRoute/* ~ transactionRoute*/, host, port)
+    Http().bindAndHandle(accountRoute ~ transferRoute ~ transactionRoute, host, port)
 
   def stopEndpoint: Future[Unit] = binding.flatMap(_.unbind())
 }
